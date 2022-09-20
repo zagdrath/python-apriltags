@@ -16,6 +16,13 @@ def plotPoint(image, center, color):
     return image
 
 
+def drawBox(image, point_a, point_b, point_c, point_d, corners, color):
+    image = cv2.line(image, point_a, point_b, color, 3)
+    image = cv2.line(image, point_b, point_c, color, 3)
+    image = cv2.line(image, point_c, point_d, color, 3)
+    image = cv2.line(image, point_d, point_a, color, 3)
+
+
 def drawText(image, center, color, text):
     center = (int(center[0]) + 4, int(center[1]) - 4)
 
@@ -53,7 +60,15 @@ while is_looping:
             image = drawText(image, detect.center, CENTER_COLOR, detect.tag_id)
 
             for corner in detect.corners:
-                image = plotPoint(image, corner, CORNER_COLOR)
+                corners = (point_a, point_b, point_c, point_d)
+
+                point_a = (int(point_a[0]), int(point_a[1]))
+                point_b = (int(point_b[0]), int(point_b[1]))
+                point_c = (int(point_c[0]), int(point_c[1]))
+                point_d = (int(point_d[0]), int(point_d[1]))
+
+                image = drawBox(image, point_a, point_b, point_c,
+                                point_d, corners, CENTER_COLOR)
 
     # Update camera stream
     cv2.imshow('Camera Stream', image)
