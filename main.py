@@ -3,7 +3,7 @@ from pupil_apriltags import Detector
 
 LINE_LENGTH = 5
 CENTER_COLOR = (0, 255, 0)
-CORNER_COLOR = (255, 0, 255)
+CORNER_COLOR = (255, 0, 0)
 
 
 def plotPoint(image, center, color):
@@ -16,7 +16,7 @@ def plotPoint(image, center, color):
     return image
 
 
-def plotText(image, center, color, text):
+def drawText(image, center, color, text):
     center = (int(center[0]) + 4, int(center[1]) - 4)
 
     return cv2.putText(image, str(text), center, cv2.FONT_HERSHEY_SIMPLEX, 1, color, 3)
@@ -47,10 +47,10 @@ while is_looping:
     else:
         # Reports and updates the camera stream if tags were found
         for detect in detections:
-            print("Tag #: %s, Image Center: %s" %
+            print("Tag #: %s, Tag Center: %s" %
                   (detect.tag_id, detect.center))
             image = plotPoint(image, detect.center, CENTER_COLOR)
-            image = plotText(image, detect.center, CENTER_COLOR, detect.tag_id)
+            image = drawText(image, detect.center, CENTER_COLOR, detect.tag_id)
 
             for corner in detect.corners:
                 image = plotPoint(image, corner, CORNER_COLOR)
